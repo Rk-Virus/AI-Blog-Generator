@@ -77,10 +77,10 @@
                 },
                 body: JSON.stringify({ prompt: prompt })
             });
-            const content = await res.text();
-            console.log(content);
+            const data = await res.json();
+            console.log(data);
 
-            document.getElementById('blog-content').innerText = content;
+            document.getElementById('blog-content').innerText = data.content;
             
         } catch (error) {
             console.error('Error:', error);
