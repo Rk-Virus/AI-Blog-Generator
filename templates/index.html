@@ -65,10 +65,8 @@
     </div>
 </div>
 
+
 <script>
-
-
-
     async function submitBlog() {
         const prompt = document.getElementById('blog-title').value;
         try {
@@ -79,8 +77,11 @@
                 },
                 body: JSON.stringify({ prompt: prompt })
             });
-            const data = await res.json();
-            console.log(data);
+            const content = await res.text();
+            console.log(content);
+
+            document.getElementById('blog-content').innerText = content;
+            
         } catch (error) {
             console.error('Error:', error);
         }
