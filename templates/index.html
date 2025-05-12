@@ -69,22 +69,27 @@
 
 
 
-    function async submitBlog() {
+    async function submitBlog() {
         const prompt = document.getElementById('blog-title').value;
-        //making an post request
-        const res = await fetch('/generate',{
-            method: 'POST',
-            headers:{
-                Content-Type: 'application/json'
-            }
-            body: JSON.stringfy({prompt: prompt})
-        })
+        try {
+            const res = await fetch('/generate', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ prompt: prompt })
+            });
+            const data = await res.json();
+            console.log(data);
+        } catch (error) {
+            console.error('Error:', error);
+        }
     }
-        //after submit click
-        let submitBtn = document.getElementById("submitBtn")
-        submitBtn.addEventListner('click', ()=>{
-            submitBlog()
-        })
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const submitBtn = document.getElementById('submitBtn');
+        submitBtn.addEventListener('click', submitBlog);
+    });
 
     function copyToClipboard() {
         const blogContent = document.getElementById('blog-content').innerText;
