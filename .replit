@@ -1,6 +1,6 @@
 run =  ["gunicorn", "--bind", "0.0.0.0:5000", "main:app"]
 entrypoint = "main.py"
-modules = ["python-3.11"]
+modules = ["nodejs-20", "python-3.11"]
 
 hidden = [".pythonlibs"]
 
