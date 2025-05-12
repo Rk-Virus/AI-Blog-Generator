@@ -8,6 +8,21 @@
     <link href="{{ url_for('static', filename='css/output.css') }}" rel="stylesheet">
 </head>
 <body>
+    <nav class="bg-gray-800 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="text-white font-bold text-xl">MyApp</div>
+            <div class="hidden md:flex space-x-4">
+                <a href="/" class="text-white hover:text-gray-300">Home</a>
+                <a href="/about" class="text-white hover:text-gray-300">About</a>
+                <a href="/contact" class="text-white hover:text-gray-300">Contact</a>
+            </div>
+            <button class="md:hidden text-white">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </div>
+    </nav>
     {% block content %}{% endblock %}
 </body>
 </html>
