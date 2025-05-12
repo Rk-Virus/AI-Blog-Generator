@@ -9,10 +9,12 @@ def index():
     
 @app.route('/generate', methods=['GET', 'POST'])
 def generate():
-    output = ""
     if request.method == 'POST':
-        output = request.json
-    return output
+        data = request.get_json()
+        prompt = data.get('prompt', '')
+        # Here you can add any processing logic for the prompt
+        return jsonify({'content': prompt})
+    return jsonify({'error': 'Invalid request method'})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000)
