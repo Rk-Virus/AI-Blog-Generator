@@ -17,7 +17,7 @@ def generate():
         print("initialising...")
         llm = GoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.7)
         print("invoking...")
-        result = llm.invoke("Gnerate an article for title: ", prompt)
+        result = llm.invoke(f"Generate an article for title: {prompt}")
         return jsonify({'content': result})
     return jsonify({'error': 'Invalid request method'})
 
