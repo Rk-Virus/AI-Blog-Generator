@@ -14,9 +14,7 @@ def generate():
         data = request.get_json()
         prompt = data.get('prompt', '')
         # Here you can add any processing logic for the prompt
-        print("initialising...")
         llm = GoogleGenerativeAI(model="gemini-2.0-flash", temperature=0.7)
-        print("invoking...")
         result = llm.invoke(f"Generate an article for title: {prompt}")
         return jsonify({'content': result})
     return jsonify({'error': 'Invalid request method'})
