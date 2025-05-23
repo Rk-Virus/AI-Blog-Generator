@@ -5,39 +5,28 @@
             Create Your Blog Post
         </h1>
         <div class="bg-white rounded-lg shadow p-6">
-            <label
-                for="blog-title"
-                class="block text-sm font-medium text-gray-700 mb-2"
-                >Enter Blog Title</label
-            >
-            <textarea
-                id="blog-title"
+            <label for="blog-title" class="block text-sm font-medium text-gray-700 mb-2">Enter Blog Title</label>
+            <textarea id="blog-title"
                 class="w-full h-32 p-3 border rounded-lg mb-4 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="Write your blog title here..."
-            ></textarea>
+                placeholder="Write your blog title here..."></textarea>
             <div class="flex justify-between items-center">
                 <button
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200"
-                    id="submitBtn"
-                >
-                    Submit
+                    class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-6 rounded-lg transition duration-200 flex items-center justify-center"
+                    id="submitBtn">
+                    <svg id="loadingSpinner" class="w-5 h-5 mr-2 animate-spin hidden" fill="none" viewBox="0 0 24 24"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4">
+                        </circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z">
+                        </path>
+                    </svg>
+                    <span id="submitText">Submit</span>
                 </button>
-                <button
-                    onclick="copyToClipboard()"
-                    class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center"
-                >
-                    <svg
-                        class="w-4 h-4 mr-2"
-                        fill="none"
-                        stroke="currentColor"
-                        viewBox="0 0 24 24"
-                    >
-                        <path
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                            stroke-width="2"
-                            d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3"
-                        />
+                <button onclick="copyToClipboard()"
+                    class="bg-gray-600 hover:bg-gray-700 text-white font-medium py-2 px-4 rounded-lg transition duration-200 flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
                     </svg>
                     Copy
                 </button>
@@ -64,6 +53,15 @@
 <script>
     async function submitBlog() {
         const prompt = document.getElementById('blog-title').value;
+        const submitBtn = document.getElementById('submitBtn');
+        const submitText = document.getElementById('submitText');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+
+        // Show loading state
+        submitBtn.disabled = true;
+        loadingSpinner.classList.remove('hidden');
+        submitText.textContent = "Generating...";
+
         try {
             const res = await fetch('/generate', {
                 method: 'POST',
@@ -72,23 +70,28 @@
                 },
                 body: JSON.stringify({ prompt: prompt })
             });
+
             const data = await res.json();
-            console.log(data);
 
             document.getElementById('blog-content').innerHTML = `
-                <div class="bg-white rounded-lg shadow p-6">
-                    <h2 class="text-2xl font-bold mb-4 text-gray-800">${prompt}</h2>
-                    <p class="text-gray-600 mb-4">${data.content}</p>
-                    <div class="flex items-center text-sm text-gray-500">
-                        <span class="mr-4">Generated on ${new Date().toLocaleDateString()}</span>
-                    </div>
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-2xl font-bold mb-4 text-gray-800">${prompt}</h2>
+                <p class="text-gray-600 mb-4">${data.content}</p>
+                <div class="flex items-center text-sm text-gray-500">
+                    <span class="mr-4">Generated on ${new Date().toLocaleDateString()}</span>
                 </div>
-            `;
-            
+            </div>
+        `;
         } catch (error) {
             console.error('Error:', error);
+        } finally {
+            // Hide loading state
+            submitBtn.disabled = false;
+            loadingSpinner.classList.add('hidden');
+            submitText.textContent = "Submit";
         }
     }
+
 
     document.addEventListener('DOMContentLoaded', () => {
         const submitBtn = document.getElementById('submitBtn');
